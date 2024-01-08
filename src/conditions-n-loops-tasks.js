@@ -311,8 +311,24 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  if (arr.length <= 2) return -1;
+  for (let i = 1; i < arr.length - 1; i += 1) {
+    let leftSum = 0;
+    let rightSum = 0;
+    for (let j = 0; j < arr.length; j += 1) {
+      if (j < i) {
+        leftSum += arr[j];
+      }
+      if (j > i) {
+        rightSum += arr[j];
+      }
+    }
+    if (leftSum === rightSum) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 /**
@@ -355,8 +371,25 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const rotatedMatrix = matrix;
+
+  for (let i = 0; i < matrix.length; i += 1) {
+    for (let j = i; j < matrix.length; j += 1) {
+      const swapElem = rotatedMatrix[i][j];
+      rotatedMatrix[i][j] = rotatedMatrix[j][i];
+      rotatedMatrix[j][i] = swapElem;
+    }
+  }
+
+  for (let i = 0; i < matrix.length; i += 1) {
+    for (let j = 0; j < Math.floor(matrix.length / 2); j += 1) {
+      const swapElem = rotatedMatrix[i][j];
+      rotatedMatrix[i][j] = rotatedMatrix[i][matrix.length - j - 1];
+      rotatedMatrix[i][matrix.length - j - 1] = swapElem;
+    }
+  }
+  return rotatedMatrix;
 }
 
 /**
@@ -373,8 +406,33 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const newArr = arr;
+
+  function quickSort(low, high) {
+    if (low < high) {
+      const pivot = newArr[high];
+      let i = low - 1;
+      for (let j = low; j < high; j += 1) {
+        if (newArr[j] <= pivot) {
+          i += 1;
+          const temp = newArr[i];
+          newArr[i] = newArr[j];
+          newArr[j] = temp;
+        }
+      }
+      const temp = newArr[i + 1];
+      newArr[i + 1] = newArr[high];
+      newArr[high] = temp;
+
+      const index = i + 1;
+      quickSort(low, index - 1);
+      quickSort(index + 1, high);
+    }
+  }
+
+  quickSort(0, newArr.length - 1);
+  return newArr;
 }
 
 /**
